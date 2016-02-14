@@ -1,3 +1,5 @@
-def joke():
-	return (u'Ween ist jaah\u00fcck git un Slotmeyer'
-					u'beiberhund simmer dick')
+"""
+Tools to load data
+"""
+
+from . import loader
