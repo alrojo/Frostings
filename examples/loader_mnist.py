@@ -2,8 +2,9 @@ import skimage.io
 import glob
 import numpy as np
 
-import loader
+from Frostings import loader
 # set-up
+# TODO - make it work for mnist (data folder is not mnist)
 
 load_method = skimage.io.imread
 paths = glob.glob("./data/*")
