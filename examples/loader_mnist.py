@@ -2,7 +2,7 @@ import skimage.io
 import glob
 import numpy as np
 
-from Frostings import loader
+from frostings import loader
 # set-up
 # TODO - make it work for mnist (data folder is not mnist)
 
