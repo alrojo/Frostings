@@ -3,23 +3,16 @@ import numpy as np
 class ElemGenerator(object):
 	def __init__(self, LoadMethod, paths=[], labels=None, shuffle=False, repeat=False):
 		self.LoadMethod = LoadMethod
-		self.paths = np.array(paths)
-		if labels is not None:
-			self.labels = np.array(labels)
-		else:
-			self.labels = labels
+		self.samples_length = len(self.LoadMethod.samples)
+		self.samples_idx = range(self.sample_length)
 		self.shuffle = shuffle
 		self.repeat = repeat
-		self.num_paths = len(paths)
 		print("ElemGenerator initiated")
 
 	def _shuffle_paths(self, state):
 		print("_shuffle_paths started")
 		np.random.set_state(state)
-		np.random.shuffle(self.paths)
-		if self.labels is not None:
-			np.random.set_state(state)
-			np.random.shuffle(self.labels)
+		np.random.shuffle(self.samples_idx)
 		print("paths have been shuffled")
 
 	def _load_elem(self, num):
@@ -27,11 +20,7 @@ class ElemGenerator(object):
 		path = self.paths[num]
 		print("path is")
 		print(path)
-		elem = self.LoadMethod(path)
-		if self.labels is not None:
-			return elem, self.labels[num]
-		else:
-			return elem
+		return self.LoadMethod(num)
 
 	def gen_elem(self):
 		print("gen_elem started")
@@ -40,7 +29,7 @@ class ElemGenerator(object):
 				state = np.random.get_state()
 				self._shuffle_paths(state)
 			print("sh*ts going down")
-			for num in xrange(self.num_paths):
+			for num in xrange(self.samples_length):
 				yield self._load_elem(num)
 			if not self.repeat:
 				break
