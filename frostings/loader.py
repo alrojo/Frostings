@@ -68,10 +68,10 @@ class ChunkGenerator(object):
 		self.ElemInfo = ElemInfo
 		self.ChunkInfo = ChunkInfo
 		self.rng = rng
-		self.chunk = []
 		print("ChunkGenerator initiated")
 
 	def _make_chunk(self):
+		self.chunk = []
 		chunk_elem = np.empty(self.ChunkInfo.chunk_size, dtype='object')
 		self.chunk.append(chunk_elem)
 		if self.ElemInfo is not None:
@@ -88,13 +88,11 @@ class ChunkGenerator(object):
 		self._make_chunk()
 		idx = 0
 		for sample in self.ElemGenerator.gen_elem():
-			print("uhh, sample!")
-			print(type(sample))
 			self._add_chunk(sample, idx)
 			idx += 1
 			if idx >= self.ChunkInfo.chunk_size:
 				yield self.chunk, idx
-				_make_chunk() # Cleaning purposes
+				self._make_chunk() # Cleaning the chunk
 				idx = 0
 		if idx > 0:
 			yield self.chunk, idx
