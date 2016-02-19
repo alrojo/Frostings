@@ -1,8 +1,8 @@
 import numpy as np
 
 class ElemGenerator(object):
-	def __init__(self, load_method, paths=[], labels=None, shuffle=False, repeat=False):
-		self.load_method = load_method
+	def __init__(self, LoadMethod, paths=[], labels=None, shuffle=False, repeat=False):
+		self.LoadMethod = LoadMethod
 		self.paths = np.array(paths)
 		if labels is not None:
 			self.labels = np.array(labels)
@@ -27,7 +27,7 @@ class ElemGenerator(object):
 		path = self.paths[num]
 		print("path is")
 		print(path)
-		elem = self.load_method(path)
+		elem = self.LoadMethod(path)
 		if self.labels is not None:
 			return elem, self.labels[num]
 		else:
