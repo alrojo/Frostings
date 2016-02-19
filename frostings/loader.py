@@ -1,5 +1,11 @@
 import numpy as np
 
+class LoadMethod(object):
+	def __init__():
+		pass
+	def __call__():
+		pass
+
 class ElemGenerator(object):
 	def __init__(self, LoadMethod, paths=[], labels=None, shuffle=False, repeat=False):
 		self.LoadMethod = LoadMethod
