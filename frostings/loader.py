@@ -10,7 +10,7 @@ class ElemGenerator(object):
 	def __init__(self, LoadMethod, paths=[], labels=None, shuffle=False, repeat=False):
 		self.LoadMethod = LoadMethod
 		self.samples_length = len(self.LoadMethod.samples)
-		self.samples_idx = range(self.sample_length)
+		self.samples_idx = range(self.samples_length)
 		self.shuffle = shuffle
 		self.repeat = repeat
 		print("ElemGenerator initiated")
