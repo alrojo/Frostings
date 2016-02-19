@@ -7,7 +7,7 @@ class LoadMethod(object):
 		pass
 
 class ElemGenerator(object):
-	def __init__(self, LoadMethod, paths=[], labels=None, shuffle=False, repeat=False):
+	def __init__(self, LoadMethod, shuffle=False, repeat=False):
 		self.LoadMethod = LoadMethod
 		self.samples_length = len(self.LoadMethod.samples)
 		self.samples_idx = range(self.samples_length)
@@ -42,6 +42,7 @@ class ElemGenerator(object):
 
 class ElemInfo(object):
 	def __init__(self, labels=False, elem_shape=None, label_shape=None, elem_dtype=None, label_dtype=None):
+		self.labels = labels
 		self.elem_shape = elem_shape
 		self.label_shape = label_shape
 		self.elem_dtype = elem_dtype
@@ -64,9 +65,10 @@ class ChunkGenerator(object):
 	def _make_chunk(self):
 		chunk_elem = np.empty(self.ChunkInfo.chunk_size, dtype='object')
 		self.chunk.append(chunk_elem)
-		if self.ElemGenerator.labels is not None:
-			chunk_label = np.empty(self.ChunkInfo.chunk_size, dtype='object')
-			self.chunk.append(chunk_label)
+		if self.ElemInfo is not None:
+			if self.ElemInfo.labels:
+				chunk_label = np.empty(self.ChunkInfo.chunk_size, dtype='object')
+				self.chunk.append(chunk_label)
 
 	def _add_chunk(self, sample, idx):
 		for s, c in zip(sample, self.chunk):
