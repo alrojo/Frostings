@@ -1,12 +1,25 @@
 import numpy as np
 
+# Method YOU should implement!
 class LoadMethod(object):
-	def __init__():
-		pass
-	def __call__():
+
+	def __init__(self):
+		self._load_data()
+		self._preprocess_data()
+
+	def _load_data(self):
+		self.train_X = []
+		self.train_t = []
+		self.samples = zip(self.train_X, self.train_t)
+
+	def _preprocess_data(self):
 		pass
 
+	def __call__(self, idx):
+		return self.samples[idx]
+
 class ElemGenerator(object):
+
 	def __init__(self, LoadMethod, shuffle=False, repeat=False):
 		self.LoadMethod = LoadMethod
 		self.samples_length = len(self.LoadMethod.samples)
@@ -21,10 +34,6 @@ class ElemGenerator(object):
 		np.random.shuffle(self.samples_idx)
 		print("paths have been shuffled")
 
-	def _load_elem(self, num):
-		print("_load_elem started")
-		return self.LoadMethod(num)
-
 	def gen_elem(self):
 		print("gen_elem started")
 		while True:
@@ -33,11 +42,12 @@ class ElemGenerator(object):
 				self._shuffle_paths(state)
 			print("sh*ts going down")
 			for num in xrange(self.samples_length):
-				yield self._load_elem(num)
+				yield self.LoadMethod(num)
 			if not self.repeat:
 				break
 
 class ElemInfo(object):
+
 	def __init__(self, labels=False, elem_shape=None, label_shape=None, elem_dtype=None, label_dtype=None):
 		self.labels = labels
 		self.elem_shape = elem_shape
@@ -46,11 +56,13 @@ class ElemInfo(object):
 		self.label_dtype = label_dtype
 
 class ChunkInfo(object):
+
 	def __init__(self, chunk_size=4096, num_chunks=800):
 		self.chunk_size = chunk_size
 		self.num_chunks = num_chunks
 
 class ChunkGenerator(object):
+
 	def __init__(self, ElemGenerator, ElemInfo=None, ChunkInfo=None, rng=np.random):
 		self.ElemGenerator = ElemGenerator
 		self.ElemInfo = ElemInfo
@@ -86,6 +98,3 @@ class ChunkGenerator(object):
 				idx = 0
 		if idx > 0:
 			yield self.chunk, idx
-
-
-
