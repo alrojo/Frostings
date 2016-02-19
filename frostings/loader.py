@@ -23,9 +23,6 @@ class ElemGenerator(object):
 
 	def _load_elem(self, num):
 		print("_load_elem started")
-		path = self.paths[num]
-		print("path is")
-		print(path)
 		return self.LoadMethod(num)
 
 	def gen_elem(self):
