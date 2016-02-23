@@ -43,7 +43,7 @@ class SampleGenerator(object):
 			if self.shuffle:
 				state = np.random.get_state()
 				self._shuffle_paths(state)
-			for num in xrange(self.samples_info.samples_length):
+			for num in xrange(self.sample_info.samples_length):
 				yield self.load_method(num)
 			if not self.repeat:
 				break
