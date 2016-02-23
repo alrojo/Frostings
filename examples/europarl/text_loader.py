@@ -2,11 +2,13 @@ from frostings.loader import *
 
 
 def remove_samples(samples):
-	return_samples = []
-	for elem_X, elem_t in samples:
-		if not ((len(elem_X<2) or (len(elem_X)>400)):
-			return_samples.append((elem_X, elem_t))
-	return return_samples
+	# remove input sentences that are too short or too long
+	samples = [(x, t) for x, t in samples if len(x) > 1 and len(x) <= 400]
+
+	# remove target sentences that are too short or too long
+	samples = [(x, t) for x, t in samples if len(t) > 1 and len(t) <= 450]
+
+	return samples
 
 def char_encoding(in_string):
 	pass
