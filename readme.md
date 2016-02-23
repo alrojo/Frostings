@@ -15,3 +15,6 @@ This class only has a skeleton is provided as it is often very different for dif
 **BatchGenerator**: puts the data in a numpy array and packs it with other batch-level specifics (see examples/europarl/text_loader.py for details on a specific implementation)
 
 **ChunkGenerator**: Gives a list of batches and computes chunk-level specifics such as zero-mean unit variance over a chunk (NOT supported yet)
+
+#Contributions
+Feedback is much wanted, however, if you are to make contributions remember to use tabs.
