@@ -19,8 +19,8 @@ class LoadMethod(object):
 		return self.samples[idx]
 
 class SampleInfo(object):
-	
-	def __init__(self, sample_length, sample_idx=None):
+
+	def __init__(self, samples_length, samples_idx=None):
 		self.samples_length = samples_length
 		self.samples_idx = samples_idx
 		print("SampleInfo initated")
@@ -68,7 +68,7 @@ class BatchGenerator(object):
 
 	def gen_batch(self):
 		self.sample_idx = 0
-		for sample in self.sample_generator.gen_sample()
+		for sample in self.sample_generator.gen_sample():
 			self.samples.append(sample)
 			self.sample_idx += 1
 			if self.sample_idx >= self.batch_info.batch_size:

@@ -1,3 +1,6 @@
+from frostings.loader import *
+
+
 def remove_samples(samples):
 	return_samples = []
 	for elem_X, elem_t in samples:
@@ -45,9 +48,9 @@ class TextLoadMethod(LoadMethod):
 				# spaces
 				my_s.append(spaces(elem))
 				# char length
-				my_s.append(char_len(elem))
+				my_s.append(char_length(elem))
 				# word length
-				my_s.append(word_len(elem))
+				my_s.append(word_length(elem))
 			self.samples[sample_idx] = tuple(my_s) + sample # concats with original sample
 
 def get_max_length(encodings):
@@ -80,4 +83,3 @@ chunk_info = ChunkInfo()
 chunk_gen = ChunkGenerator(text_batch_gen, chunk_info)
 # should be used like.
 # for train_X_char_enc, train_X_word_enc, train_X_sequence_length ... in text_batch_gen.gen_batch():
-	
