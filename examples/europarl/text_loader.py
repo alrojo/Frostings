@@ -10,7 +10,20 @@ def remove_samples(samples):
 
 	return samples
 
+# prepare a dictionary for mapping characters to integer tokens
+
+def get_dictionary_char(langs = ['en', 'fr']):
+	alphabet = dict()
+	for lang in langs:
+		with open('./data/alphabet.'+lang, 'r') as f:
+			alphabet[lang] = f.read().split('\n')
+	alphadict = []
+	for lang in langs:
+		alphadict.append({character: idx for idx, character in enumerate(alphabet[lang])})
+	return alphadict
+
 def char_encoding(in_string):
+
 	pass
 
 def word_encoding(in_string):
