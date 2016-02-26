@@ -1,11 +1,14 @@
 import numpy as np
+import os
+import utils
+
+from . import utils
 
 # Method YOU should implement!
 class LoadMethod(object):
 
 	def __init__(self):
-		self._load_data()
-		self._preprocess_data()
+		self._prepare_data()
 
 	def _load_data(self):
 		self.train_X = []
@@ -14,6 +17,13 @@ class LoadMethod(object):
 
 	def _preprocess_data(self):
 		pass
+
+	def _prepare_data(self):
+		if not os.path.exists("data/train.npy.gz"):
+			self._load_data()
+			self._preprocess_data()
+		else:
+			self.samples = utils.load_gz("data/train.npy.gz")
 
 	def __call__(self, idx):
 		return self.samples[idx]
@@ -57,8 +67,9 @@ class BatchInfo(object):
 class BatchGenerator(object):
 
 	def __init__(self, sample_generator, batch_info):
-		self.samples_generator = sample_generator
+		self.sample_generator = sample_generator
 		self.batch_info = batch_info
+		self.samples = []
 
 	def _make_batch_holder(self):
 		pass # undecided on the general purpose structure ... See examples for implementation
