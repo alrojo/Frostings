@@ -42,19 +42,20 @@ class SampleGenerator(object):
 		self.sample_info = sample_info
 		self.shuffle = shuffle
 		self.repeat = repeat
-		print("ElemGenerator initiated")
 
-	def _shuffle_paths(self, state):
-		np.random.set_state(state)
-		np.random.shuffle(self.samples_idx)
+		# This default permutation is only used if shuffle == False
+		num_samples = self.sample_info.samples_length
+		self.permutation = xrange(num_samples)
+
+		print("ElemGenerator initiated")
 
 	def gen_sample(self):
 		while True:
 			if self.shuffle:
-				state = np.random.get_state()
-				self._shuffle_paths(state)
+				num_samples = self.sample_info.samples_length
+				self.permutation = np.random.permutation(num_samples)
 			for num in xrange(self.sample_info.samples_length):
-				yield self.load_method(num)
+				yield self.load_method(self.permutation[num])
 			if not self.repeat:
 				break
 
