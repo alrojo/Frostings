@@ -79,14 +79,19 @@ class BatchGenerator(object):
 		pass # undecided on the general purpose structure ... See examples for implementation
 
 	def gen_batch(self):
-		self.sample_idx = 0
+		num_collected_samples = 0
 		for sample in self.sample_generator.gen_sample():
 			self.samples.append(sample)
-			self.sample_idx += 1
-			if self.sample_idx >= self.batch_info.batch_size:
-				yield self._make_batch()
-		if self.sample_idx > 0:
-			yield self._make_batch()
+			num_collected_samples += 1
+			if num_collected_samples == self.batch_info.batch_size:
+				yield self._make_batch(), num_collected_samples
+				# resetting
+				self.samples = []  
+				num_collected_samples = 0
+
+		# any samples remaining?
+                if num_collected_samples > 0:
+			yield self._make_batch(), num_collected_samples
 
 class ChunkInfo(object):
 
