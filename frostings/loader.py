@@ -4,6 +4,7 @@ import utils
 
 from . import utils
 
+
 # Method YOU should implement!
 class LoadMethod(object):
 
@@ -28,12 +29,14 @@ class LoadMethod(object):
     def __call__(self, idx):
         return self.samples[idx]
 
+
 class SampleInfo(object):
 
     def __init__(self, samples_length, samples_idx=None):
         self.samples_length = samples_length
         self.samples_idx = samples_idx
         print("SampleInfo initated")
+
 
 class SampleGenerator(object):
 
@@ -59,11 +62,13 @@ class SampleGenerator(object):
             if not self.repeat:
                 break
 
+
 class BatchInfo(object):
 
     def __init__(self, batch_size):
         self.batch_size = batch_size
         print("BatchInfo initiated")
+
 
 class BatchGenerator(object):
 
@@ -73,24 +78,23 @@ class BatchGenerator(object):
         self.samples = []
 
     def _make_batch_holder(self):
-        pass # undecided on the general purpose structure ... See examples for implementation
+        pass
+        # undecided on the general purpose structure ... See examples for
+        # implementation
 
     def _make_batch(self):
-        pass # undecided on the general purpose structure ... See examples for implementation
+        raise NotImplementedError
 
     def gen_batch(self):
-        num_collected_samples = 0
+        self.samples = []
         for sample in self.sample_generator.gen_sample():
             self.samples.append(sample)
-            num_collected_samples += 1
-            if num_collected_samples == self.batch_info.batch_size:
+            if len(self.samples) == self.batch_info.batch_size:
                 yield self._make_batch()
-                # resetting
-                self.samples = []
-                num_collected_samples = 0
+                self.samples = []  # reset batch
 
-        # any samples remaining?
-        if num_collected_samples > 0:
+        # make a smaller batch from any remaining samples
+        if len(self.samples) > 0:
             yield self._make_batch()
 
     @property
@@ -101,12 +105,14 @@ class BatchGenerator(object):
         """
         return len(self.samples)
 
+
 class ChunkInfo(object):
 
     def __init__(self, chunk_size=4096, num_chunks=800):
         self.chunk_size = chunk_size
         self.num_chunks = num_chunks
         print("ChunkInfo initiated")
+
 
 class ChunkGenerator(object):
 
@@ -118,14 +124,14 @@ class ChunkGenerator(object):
         print("ChunkGenerator initiated")
 
     def _make_chunk_holder(self):
-        self.chunk = [] # not in __init__ to reset it at every call
-        self.chunk.append([]) # where the batch is located
-        self.chunk.append(self.batch_idx) # pasting the idx
+        self.chunk = []  # not in __init__ to reset it at every call
+        self.chunk.append([])  # where the batch is located
+        self.chunk.append(self.batch_idx)  # pasting the idx
         self.batch_idx = 0
 
     def _make_chunk(self):
         self._make_chunk_holder()
-        for _ in range(len(self.batches)): # smarter solution?
+        for _ in range(len(self.batches)):  # smarter solution?
             self.chunk[0].append(self.batches.pop())
         return self.chunk
 
