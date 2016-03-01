@@ -84,14 +84,22 @@ class BatchGenerator(object):
             self.samples.append(sample)
             num_collected_samples += 1
             if num_collected_samples == self.batch_info.batch_size:
-                yield self._make_batch(), num_collected_samples
+                yield self._make_batch()
                 # resetting
-                self.samples = []  
+                self.samples = []
                 num_collected_samples = 0
 
         # any samples remaining?
         if num_collected_samples > 0:
-            yield self._make_batch(), num_collected_samples
+            yield self._make_batch()
+
+    @property
+    def latest_batch_size(self):
+        """The actual size of the last produced batch. This is useful
+        to know if there weren't enough samples left in the data set to
+        make a full size batch.
+        """
+        return len(self.samples)
 
 class ChunkInfo(object):
 
