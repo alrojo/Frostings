@@ -30,51 +30,35 @@ class LoadMethod(object):
         return self.samples[idx]
 
 
-class SampleInfo(object):
-
-    def __init__(self, samples_length, samples_idx=None):
-        self.samples_length = samples_length
-        self.samples_idx = samples_idx
-        print("SampleInfo initated")
-
-
 class SampleGenerator(object):
 
-    def __init__(self, load_method, sample_info, shuffle=False, repeat=False):
+    def __init__(self, load_method, shuffle=False, repeat=False):
         self.load_method = load_method
-        self.sample_info = sample_info
+        self.num_samples = len(self.load_method.samples)
         self.shuffle = shuffle
         self.repeat = repeat
 
         # This default permutation is only used if shuffle == False
-        num_samples = self.sample_info.samples_length
-        self.permutation = xrange(num_samples)
+        self.permutation = xrange(self.num_samples)
 
         print("ElemGenerator initiated")
 
     def gen_sample(self):
         while True:
             if self.shuffle:
-                num_samples = self.sample_info.samples_length
+                num_samples = self.num_samples
                 self.permutation = np.random.permutation(num_samples)
-            for num in xrange(self.sample_info.samples_length):
+            for num in xrange(self.num_samples):
                 yield self.load_method(self.permutation[num])
             if not self.repeat:
                 break
 
 
-class BatchInfo(object):
-
-    def __init__(self, batch_size):
-        self.batch_size = batch_size
-        print("BatchInfo initiated")
-
-
 class BatchGenerator(object):
 
-    def __init__(self, sample_generator, batch_info):
+    def __init__(self, sample_generator, batch_size):
         self.sample_generator = sample_generator
-        self.batch_info = batch_info
+        self.batch_size = batch_size
         self.samples = []
 
     def _make_batch(self):
@@ -84,7 +68,7 @@ class BatchGenerator(object):
         self.samples = []
         for sample in self.sample_generator.gen_sample():
             self.samples.append(sample)
-            if len(self.samples) == self.batch_info.batch_size:
+            if len(self.samples) == self.batch_size:
                 yield self._make_batch()
                 self.samples = []  # reset batch
 
