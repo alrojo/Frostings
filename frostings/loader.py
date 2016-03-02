@@ -77,11 +77,6 @@ class BatchGenerator(object):
         self.batch_info = batch_info
         self.samples = []
 
-    def _make_batch_holder(self):
-        pass
-        # undecided on the general purpose structure ... See examples for
-        # implementation
-
     def _make_batch(self):
         raise NotImplementedError
 
