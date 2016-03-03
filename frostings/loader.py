@@ -39,7 +39,7 @@ class SampleGenerator(object):
         self.repeat = repeat
 
         # This default permutation is only used if shuffle == False
-        self.permutation = xrange(self.num_samples)
+        self.permutation = range(self.num_samples)
 
         print("ElemGenerator initiated")
 
@@ -48,7 +48,7 @@ class SampleGenerator(object):
             if self.shuffle:
                 num_samples = self.num_samples
                 self.permutation = np.random.permutation(num_samples)
-            for num in xrange(self.num_samples):
+            for num in range(self.num_samples):
                 yield self.load_method(self.permutation[num])
             if not self.repeat:
                 break
