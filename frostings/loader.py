@@ -78,9 +78,10 @@ class BatchGenerator(object):
 
     @property
     def latest_batch_size(self):
-        """The actual size of the last produced batch. This is useful
-        to know if there weren't enough samples left in the data set to
-        make a full size batch.
+        """Actual size of the most recently produced batch.
+
+        This is useful if there weren't enough samples left in the data
+        set to make a full size batch.
         """
         return len(self.samples)
 
